@@ -70,14 +70,15 @@ class Batalla{
 	 * @param {*} amount 
 	 * @returns 
 	 */
-    damagePlayer (id_player, amount) {
+    damagePlayer(id_player) {
+		var amount = this.createAttack(this.getPlayer(id_player))
 		switch(id_player){
 			case this.player1.id_player:
 				return this.player1.damagePlayer(amount);
 			case this.player2.id_player:
 				return this.player2.damagePlayer(amount);
 			default :
-				console.error(`El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
+				console.error(`[DamagePlayer] El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
 				break;
 		}
     }
@@ -88,8 +89,8 @@ class Batalla{
 	 * @param {*} amount 
 	 * @returns 
 	 */
-	damageOtherPlayer(id_player,amount){
-		return this.damagePlayer(this.getOtherPlayer(id_player),amount)
+	damageOtherPlayer(id_player){
+		return this.damagePlayer(this.getOtherPlayer(id_player).id_player)
 	}
 
 	/**
@@ -106,7 +107,7 @@ class Batalla{
 			case this.player2.id_player:
 				return this.player2.recoverPlayer(amount);
 			default :
-				console.error(`El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
+				console.error(`[RecoverPlayer] El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
 				break;
 		}
     }
@@ -124,7 +125,7 @@ class Batalla{
 			case this.player2.id_player:
 				return this.player1
 			default :
-				console.error(`El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
+				console.error(`[GetOtherPlayer] El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
 				break;
 		}
 	}
@@ -142,8 +143,24 @@ class Batalla{
 			case this.player2.id_player:
 				return this.player2
 			default :
-				console.error(`El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
+				console.error(`[GetPlayer] El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
 				break;
+		}
+	}
+
+	/**
+	 * Función que calcula el daño del ataque
+	 * @param {Player} player 
+	 * @returns 
+	 */
+	createAttack(player){
+		var probAtaque = Math.floor(Math.random() * 100);
+		if(probAtaque < 60){
+			return player.ataque 
+		}else if (probAtaque < 90){
+			return player.ataque + player.ataque/3
+		}else{
+			return player.ataque + player.ataque*0.75
 		}
 	}
 
@@ -375,17 +392,6 @@ function startEvent(evento){
 	}
 }
 
-function crearAtaque(baseDamage){
-	var probAtaque = Math.floor(Math.random() * 100);
-	if(probAtaque < 60){
-		return baseDamage 
-	}else if (probAtaque < 90){
-		return baseDamage + baseDamage/3
-	}else{
-		return baseDamage + baseDamage*0.75
-	}
-}
-
 // Creacion del servidor y configuracion de las rutas
 const app = express()
 
@@ -471,14 +477,9 @@ client.on('message', (channel, tags, message, self) => {
 			});
 		}else if(getInclusion(message, '!ataque1')){ // Comando para atacar al rival
 			if(evento_actual.tipo instanceof Batalla){
-				console.log('Es de tipo batalla')
-				console.log('usuario escribe :'+tags['username'])
-				console.log('usuarios implicados :'+evento_actual.idImplicados)
 				if(evento_actual.idImplicados.includes(tags['username'])){
 					//console.log('Mi player : '+tags['username'])
-					var otroJugador = evento_actual.tipo.getOtherPlayer(tags['name']).id_player
-					var damage = crearAtaque(evento_actual.tipo.getPlayer(tags['name']).ataque)
-					evento_actual.tipo.damagePlayer(otroJugador, damage)
+					evento_actual.tipo.damageOtherPlayer(tags['username'])
 					io.sockets.emit('take_damage', {life1: evento_actual.tipo.player1.ps,life2:  evento_actual.tipo.player2.ps, maxlife1 : evento_actual.tipo.player1.psBase, maxlife2 : evento_actual.tipo.player2.psBase})
 				}
 			}
