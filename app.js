@@ -5,6 +5,7 @@ const socketio = require('socket.io')	// Libreria de servidor
 const { spawn } = require('child_process');	// Libreria para ejecutar programas de python
 const tmi = require('tmi.js');	// Libreria que maneja el chat de Twitch
 const fs = require('fs');	// Libreria que maneja la lectura y escritura de archivos
+const player = require('play-sound')();
 
 // Variables globales
 var clientTwitchToken	// Guarda el Token del cliente de Twitch
@@ -311,9 +312,11 @@ function getProfileImage(users){
 	xhr.onreadystatechange = function () {
 	if (xhr.readyState === 4) {
 		const obj = JSON.parse(xhr.responseText);
-		var user1 = obj['users'][0]['logo'];
-		var user2 = obj['users'][1]['logo'];
-		resolve([user1,user2]);
+		if(users[0] == obj['users'][0]['name']){
+			resolve([obj['users'][0]['logo'],obj['users'][1]['logo']]);
+		}else{
+			resolve([obj['users'][1]['logo'],obj['users'][0]['logo']]);
+		}
 	}};
 
 	xhr.send();
@@ -342,9 +345,15 @@ function getUser(users){
 	if (xhr.readyState === 4) {
 		const obj = JSON.parse(xhr.responseText);
 		var usuariosDevueltos = []
+		var resultado = []
 		if(obj['_total']>1){
 			obj['users'].forEach(element => usuariosDevueltos.push(element['name']));
-			resolve(usuariosDevueltos);
+			users.forEach(function(element) {
+				if(usuariosDevueltos.includes(element)){
+					resultado.push(element)
+				}
+			});
+			resolve(resultado);
 		}else{
 			reject('no hay usuarios suficientes -> '+ obj['_total']);
 		}	
@@ -380,7 +389,7 @@ function startEvent(evento){
 		case 0:
 			evento.tipo = new Batalla(evento.idImplicados[0],evento.idImplicados[1],fs)
 			Promise.all([getProfileImage(evento.idImplicados)]).then(function(values) { 
-				//username1: evento.idImplicados[0], username2: evento.idImplicados[1], profile1: values[0][0], profile2: values[0][1]
+
 				io.sockets.emit('change_to_game', {evento: evento, profile1: values[0][0], profile2: values[0][1]})
 			}).catch(function(reason) {
 				// one of the AJAX calls failed
@@ -481,6 +490,9 @@ client.on('message', (channel, tags, message, self) => {
 					//console.log('Mi player : '+tags['username'])
 					evento_actual.tipo.damageOtherPlayer(tags['username'])
 					io.sockets.emit('take_damage', {life1: evento_actual.tipo.player1.ps,life2:  evento_actual.tipo.player2.ps, maxlife1 : evento_actual.tipo.player1.psBase, maxlife2 : evento_actual.tipo.player2.psBase})
+					player.play('/sound/punch.mp3', (err) => {
+						if (err) console.log(`Could not play sound: ${err}`);
+					});
 				}
 			}
 		}

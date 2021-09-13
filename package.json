@@ -20,8 +20,10 @@
     "nodemon": "^2.0.12"
   },
   "nodemonConfig": {
-    "ignore": ["*.json"]
- },
+    "ignore": [
+      "*.json"
+    ]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"

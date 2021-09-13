@@ -1,6 +1,7 @@
 # Patata
 final.mp3
 public/data/players.json
+public/sound/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
