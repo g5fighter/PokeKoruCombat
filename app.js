@@ -8,7 +8,7 @@ const fs = require('fs');	// Libreria que maneja la lectura y escritura de archi
 const player = require('play-sound')();
 
 // Variables globales
-var clientTwitchToken	// Guarda el Token del cliente de Twitch
+var clientTwitchToken = null	// Guarda el Token del cliente de Twitch
 var eventos = []		// Guarda una lista con todos los eventos
 var evento_actual = null	// Guarda el evento_actual
 const port = 5000	// Puerto que abre el servidor
@@ -72,6 +72,7 @@ class Batalla{
 	 * @returns 
 	 */
     damagePlayer(id_player) {
+		this.changeTurno()
 		var amount = this.createAttack(this.getPlayer(id_player))
 		switch(id_player){
 			case this.player1.id_player:
@@ -91,7 +92,25 @@ class Batalla{
 	 * @returns 
 	 */
 	damageOtherPlayer(id_player){
-		return this.damagePlayer(this.getOtherPlayer(id_player).id_player)
+		if(this.isRonda(id_player)){
+			return this.damagePlayer(this.getOtherPlayer(id_player).id_player)
+		}
+	}
+
+	isRonda(id_player){
+		if(id_player == this.player1.id_player){
+			if(this.turno%2==0){
+				return true
+			}else{
+				return false
+			}
+		}else{
+			if(this.turno%2==1){
+				return true
+			}else{
+				return false
+			}
+		}
 	}
 
 	/**
@@ -129,6 +148,10 @@ class Batalla{
 				console.error(`[GetOtherPlayer] El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
 				break;
 		}
+	}
+
+	changeTurno(){
+		this.turno+=1;
 	}
 
 	/**
@@ -312,6 +335,7 @@ function getProfileImage(users){
 	xhr.onreadystatechange = function () {
 	if (xhr.readyState === 4) {
 		const obj = JSON.parse(xhr.responseText);
+		console.log(obj)
 		if(users[0] == obj['users'][0]['name']){
 			resolve([obj['users'][0]['logo'],obj['users'][1]['logo']]);
 		}else{
@@ -456,6 +480,8 @@ client.connect();
 
 // Administrador de mensajes de Twitch
 
+//while(clientTwitchToken==null){
+//}
 client.on('message', (channel, tags, message, self) => {
 	if(self) return;
 
@@ -476,15 +502,16 @@ client.on('message', (channel, tags, message, self) => {
 			menciones = menciones.split(/(\s+)/);
 			menciones.forEach(element => {
 				if(element.startsWith("@")){
-					usuariosTomados.push(element.substring(1,element.length))
+					usuariosTomados.push(element.substring(1,element.length).toLowerCase())
 				}
 			});
+			console.log(usuariosTomados)
 			Promise.all([getUser(usuariosTomados)]).then(function(values) { 
 				createEvent(0,tags['username'],values[0]);
 			}).catch(function(reason) {
 				console.log(reason);
 			});
-		}else if(getInclusion(message, '!ataque1')){ // Comando para atacar al rival
+		}else if(getInclusion(message, '!ataque')){ // Comando para atacar al rival
 			if(evento_actual.tipo instanceof Batalla){
 				if(evento_actual.idImplicados.includes(tags['username'])){
 					//console.log('Mi player : '+tags['username'])
@@ -497,7 +524,11 @@ client.on('message', (channel, tags, message, self) => {
 			}
 		}
 		else if(getInclusion(message, '!test')){ // Comando para hacer tests
-			console.log(JSON.stringify(tags, null, 4));
+			//console.log(JSON.stringify(tags, null, 4));
+			console.log(3%2)
+			console.log(2%2)
+			console.log(1%2)
+			console.log(0%2)
 		}
 	}
 });
