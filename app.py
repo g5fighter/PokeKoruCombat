@@ -1,6 +1,4 @@
-
 import sys
-import time
 from gtts import gTTS # Importamos el módulo de TTS
 from pygame import mixer  # Importamos el módulo para reproducir sonido
 
@@ -26,7 +24,7 @@ def playTexto(texto, language = 'es', nombre = 'output'):
     mixer.init()
     mixer.music.load(filename) # Cargamos la cancion
     mixer.music.play()
-    time.sleep(2)
+    #time.sleep(2)
     while(mixer.music.get_busy()): # Mientras se este reproduciendo nos quedamos en el while
       continue
     mixer.music.stop() # Cerramos

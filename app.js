@@ -97,6 +97,11 @@ class Batalla{
 		}
 	}
 
+	/**
+	 * Dado un parámetro id_player esta función devuelve si es su turno o no.
+	 * @param {*} id_player 
+	 * @returns 
+	 */
 	isRonda(id_player){
 		if(id_player == this.player1.id_player){
 			if(this.turno%2==0){
@@ -150,6 +155,9 @@ class Batalla{
 		}
 	}
 
+	/**
+	 * Función que avanza al próximo turno
+	 */
 	changeTurno(){
 		this.turno+=1;
 	}
@@ -335,7 +343,6 @@ function getProfileImage(users){
 	xhr.onreadystatechange = function () {
 	if (xhr.readyState === 4) {
 		const obj = JSON.parse(xhr.responseText);
-		console.log(obj)
 		if(users[0] == obj['users'][0]['name']){
 			resolve([obj['users'][0]['logo'],obj['users'][1]['logo']]);
 		}else{
@@ -425,6 +432,19 @@ function startEvent(evento){
 	}
 }
 
+async function playSound(sound){
+	console.log('A reproducirse')
+	let audio = player.play(sound, function(err){
+		if (err) throw err
+	  })
+	  await sleep(1000)
+	  audio.kill();
+}
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 // Creacion del servidor y configuracion de las rutas
 const app = express()
 
@@ -488,10 +508,6 @@ client.on('message', (channel, tags, message, self) => {
 	if(message.startsWith('!')){
 		if(getInclusion(message, '!habla')) { // Comando para reproducir TTS del parametro dado
 			child = spawn('python',['app.py',message.substring(7,message.length)]);
-			
-			child.stdout.on('data',(data) => {
-				console.log(`stderr: ${data}`);
-			} )
 
 			child.stderr.on('data',(data) => {
 				console.error(`stderr: ${data}`);
@@ -505,7 +521,6 @@ client.on('message', (channel, tags, message, self) => {
 					usuariosTomados.push(element.substring(1,element.length).toLowerCase())
 				}
 			});
-			console.log(usuariosTomados)
 			Promise.all([getUser(usuariosTomados)]).then(function(values) { 
 				createEvent(0,tags['username'],values[0]);
 			}).catch(function(reason) {
@@ -514,21 +529,17 @@ client.on('message', (channel, tags, message, self) => {
 		}else if(getInclusion(message, '!ataque')){ // Comando para atacar al rival
 			if(evento_actual.tipo instanceof Batalla){
 				if(evento_actual.idImplicados.includes(tags['username'])){
-					//console.log('Mi player : '+tags['username'])
 					evento_actual.tipo.damageOtherPlayer(tags['username'])
 					io.sockets.emit('take_damage', {life1: evento_actual.tipo.player1.ps,life2:  evento_actual.tipo.player2.ps, maxlife1 : evento_actual.tipo.player1.psBase, maxlife2 : evento_actual.tipo.player2.psBase})
-					player.play('/sound/punch.mp3', (err) => {
-						if (err) console.log(`Could not play sound: ${err}`);
-					});
+					//async() => {
+						playSound('public/sound/punch.mp3')
+					//}
+				
 				}
 			}
 		}
 		else if(getInclusion(message, '!test')){ // Comando para hacer tests
-			//console.log(JSON.stringify(tags, null, 4));
-			console.log(3%2)
-			console.log(2%2)
-			console.log(1%2)
-			console.log(0%2)
+			console.log(JSON.stringify(tags, null, 4));
 		}
 	}
 });

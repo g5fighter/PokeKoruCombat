@@ -1,6 +1,6 @@
 # Patata
 final.mp3
-public/data/*.json
+public/data/*
 public/sound/*
 
 # Byte-compiled / optimized / DLL files
