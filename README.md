@@ -1,6 +1,9 @@
 # PokeKoruCombat
  Sistema de ataque para streams
  
+# Wiki
+No olvides consultar la [WIKI](https://github.com/g5fighter/PokeKoruCombat/wiki), para obtener toda la información sobre el proyecto y su uso.
+ 
 # ¡ATENCIÓN!
 El desarrollo de este proyecto está en progreso.
 
