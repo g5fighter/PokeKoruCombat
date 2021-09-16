@@ -1,3 +1,4 @@
+const fs = require('fs');
 /**
  * La clase Player maneja todos los datos del jugador
  * 	- El nivel
@@ -15,6 +16,7 @@
 			if(parseado[id_player]==null){
 				this.level = 1
 				this.exp = 0
+				this.expNivel = 10
 				this.ps = 100; 
 				this.psBase = 100; 
 				this.ataque = 10;
@@ -23,6 +25,7 @@
 			}else{
 				this.exp = parseado[id_player]['exp']
 				this.level = parseado[id_player]['level']
+				this.expNivel = 10 * (1,1 ** (this.level-1))
 				this.ps = 100 * (1.05 ** (this.level-1)); 
 				this.psBase = 100 * (1.05 ** (this.level-1)); 
 				this.ataque = 10 * (1.05 ** (this.level-1));;
@@ -60,10 +63,11 @@
 	 * Funcion que añade la experiencia al jugador, y luego guarda sus datos
 	 * @param {*} amount 
 	 */
-	gainExperienece(amount){
+	gainExperienece(player){
+		var amount = 10*(1.1**(player.level-1))
 		this.exp += amount;
 		var expEsteNivel = 10*(1.1**(this.level-1))
-		if(this.exp > expEsteNivel){
+		if(this.exp > expEsteNivel && this.level < 100){
 			this.exp -= expEsteNivel
 			this.level+=1;
 		}
@@ -72,9 +76,9 @@
 			  console.error(err)
 			  return
 			}
-			parseado = JSON.parse(data)
-			if(parseado[id_player]==null){
-				parseado[id_player] = {level : this.level , exp : this.exp, winned : this.winned, losed : this.losed}
+			var parseado = JSON.parse(data)
+			if(parseado[this.id_player]!=null){
+				parseado[this.id_player] = {level : this.level , exp : this.exp, winned : this.winned, losed : this.losed}
 				fs.writeFile('public/data/players.json', JSON.stringify(parseado) , function (err){
 					if (err) return console.log(err);
 				  });

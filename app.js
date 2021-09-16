@@ -154,7 +154,7 @@ function startEvent(evento){
 	evento_actual = evento
 	switch(evento.tipo){
 		case 0:
-			evento.tipo = new Batalla(evento.idImplicados[0],evento.idImplicados[1],fs)		
+			evento.tipo = new Batalla(evento.idImplicados[0],evento.idImplicados[1])		
 			cargarJuego()
 			break;
 	}
@@ -167,6 +167,15 @@ function cargarJuego(firstTime = false){
 		// one of the AJAX calls failed
 		console.log(reason);
 	});	
+}
+
+function terminarEvento(){
+	evento_actual = null
+	if(eventos.length > 0 ){
+		eventoahora = eventos.pop()
+		startEvent(eventoahora)
+		evento_actual = eventoahora
+	}
 }
 
 /**
@@ -278,15 +287,20 @@ client.on('message', (channel, tags, message, self) => {
 			}
 			if(evento_actual.tipo instanceof Batalla){
 				if(evento_actual.idImplicados.includes(tags['username'])){
-					evento_actual.tipo.damageOtherPlayer(tags['username'])
-					io.sockets.emit('take_damage', {evento: evento_actual})
+					if(!evento_actual.tipo.damageOtherPlayer(tags['username'])){
+						io.sockets.emit('deblitado', {evento: evento_actual})
+						terminarEvento()
+					}else{
+						io.sockets.emit('take_damage', {evento: evento_actual, player: evento_actual.tipo.getPlayerNumber(evento_actual.tipo.getOtherPlayer(tags['username']))})
+					}
 					playSound('public/sound/punch.mp3')
 				
 				}
 			}
 		}
 		else if(getInclusion(message, '!test')){ // Comando para hacer tests
-			console.log(JSON.stringify(tags, null, 4));
+			//console.log(JSON.stringify(tags, null, 4));
+			evento_actual.tipo.player1.gainExperienece(evento_actual.tipo.player2)
 		}
 	}
 });

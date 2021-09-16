@@ -1,5 +1,6 @@
 const Player = require("./player");
- 
+const fs = require('fs');
+
  /**
   * La clase Batalla es un tipo de evento que guarda:
   * 	- Los jugadores implicados
@@ -8,7 +9,7 @@ const Player = require("./player");
   */
   module.exports = class Batalla{
 
-    constructor(id_player1,id_player2,fs){
+    constructor(id_player1,id_player2){
 		this.turno = 0
 		// Leemos el archivo creamos los jugadores y guardamos los datos por si hay posibles creaciones de usuario
 		fs.readFile('public/data/players.json', 'utf8' , (err, data) => {
@@ -56,7 +57,11 @@ const Player = require("./player");
 	 */
 	damageOtherPlayer(id_player){
 		if(this.isRonda(id_player)){
-			return this.damagePlayer(this.getOtherPlayer(id_player).id_player)
+			var estaDebilitado = this.damagePlayer(this.getOtherPlayer(id_player).id_player)
+			if(estaDebilitado){
+				this.getPlayer(id_player).gainExperienece(this.getOtherPlayer(id_player))
+			}
+			return estaDebilitado
 		}
 	}
 
@@ -157,6 +162,19 @@ const Player = require("./player");
 		}else{
 			return player.ataque + player.ataque*0.75
 		}
+	}
+
+	getPlayerNumber(player){
+		switch(player.id_player){
+			case this.player1.id_player:
+				return 0
+			case this.player2.id_player:
+				return 1
+			default :
+				console.error(`[GetPlayer] El jugador con ID -> ${id_player} no se encuentra en esta batalla`);
+				break;
+		}
+
 	}
 
 }
