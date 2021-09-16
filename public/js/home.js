@@ -4,16 +4,25 @@
 
 */
 var estado = 0;
+var id = -1;
+const lifeBarSize = '260.104'
+
+function clearHTML(){
+    document.body.innerHTML = ""
+}
 
 (function connect(){
     let socket = io.connect('http://localhost:5000')
 
-    // Vuestra visualmente el daño al jugador
+    // Recibe el estado actual del juego
     socket.on('take_damage', data => {
+
         //console.log(data)
         if(estado==1){
-            document.getElementById("barra_vida_main").style.width = '260.104' * data.life1 / data.maxlife1;
-            document.getElementById("barra_vida_secun").style.width = '260.104' * data.life2 / data.maxlife2;
+            document.getElementById("barra_vida_main").style.width = lifeBarSize * data.evento.tipo.player1.ps / data.evento.tipo.player1.psBase;
+            document.getElementById("barra_vida_secun").style.width = lifeBarSize * data.evento.tipo.player2.ps / data.evento.tipo.player2.psBase;
+            console.log("Estoy dañando: "+data.evento.tipo.player1.ps)
+            console.log()
         }else{
             console.error('No hay juego')
         }
@@ -22,6 +31,15 @@ var estado = 0;
 
     // Carga el juego
     socket.on('change_to_game', data => {
+        if(data.firstTime==true){
+            if(id!=data.evento.id){
+                clearHTML()
+            }else{
+                return
+            }
+
+        }
+        id = data.evento.id
         //console.log(data)
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function(){
