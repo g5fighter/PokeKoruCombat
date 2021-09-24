@@ -17,8 +17,14 @@ module.exports = class PokeKoruCombat{
                 }
             });
             Promise.all([this.app.ApiTwitch.getUser(usuariosTomados)]).then((values) => { 
-                var batalla = new Batalla(tags['username'],values[0],this);
-                this.app.eventManager.createEvent(batalla);
+                var batalla = new Batalla(tags['username'],values[0],this.app);
+                batalla.setImages(this.app).then(res => {
+                    console.log('[PokeKoruCombat]: He creado batalla')
+                    this.app.eventManager.createEvent(batalla);
+                }).catch(err => {
+                    console.log(err)
+                })
+
             }).catch(function(reason) {
                 console.log(reason);
             });
@@ -27,24 +33,28 @@ module.exports = class PokeKoruCombat{
             if(this.app.eventManager.evento_actual==null){
                 return
             }
-            if( this.app.eventManager.evento_actual.tipo instanceof Batalla){
+            if( this.app.eventManager.evento_actual instanceof Batalla){
                 if( this.app.eventManager.evento_actual.idImplicados.includes(tags['username'])){
-                    if(! this.app.eventManager.evento_actual.tipo.damageOtherPlayer(tags['username'])){
+                    if(! this.app.eventManager.evento_actual.damageOtherPlayer(tags['username'])){
                         this.app.io.sockets.emit('deblitado', {evento:  this.app.eventManager.evento_actual})
                         this.app.eventManager.terminarEvento()
                     }else{
-                        this.app.io.sockets.emit('take_damage', {evento:  this.app.eventManager.evento_actual, player:  this.app.eventManager.evento_actual.tipo.getPlayerNumber( this.app.eventManager.evento_actual.tipo.getOtherPlayer(tags['username']))})
+                        this.app.io.sockets.emit('take_damage', {evento:  this.app.eventManager.evento_actual, player:  this.app.eventManager.evento_actual.getPlayerNumber( this.app.eventManager.evento_actual.getOtherPlayer(tags['username']))})
                     }
-                    utilities.playSound('public/sound/punch.mp3')
+                    utilities.playSound('./public/sound/punch.mp3')
                 
                 }
             }
         }
     }
     
-    loadGame(firstTime){
+    start(firstTime){
         console.log('[PokeKoruCombat]: Lodeamos el juego') // Segguir recorrido desde aqui
         this.app.io.sockets.emit('change_to_game', {evento: this.app.eventManager.evento_actual, firstTime: firstTime})
+    }
+
+    isEvent(evento){
+        return evento instanceof Batalla
     }
 
 }

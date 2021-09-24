@@ -34,7 +34,17 @@ module.exports = class EventManager{
     startEvent(evento){
         console.log('[EventManager]: Se comienza el evento')
         this.evento_actual = evento
-        evento.start()
+        this.modulos.forEach(function(element){
+            //console.log('[EventManager]: '+element.constructor.name+'-----'+evento.constructor.name)
+            try{
+                if(element.isEvent(evento)){
+                    element.start()
+                    return
+                }
+            } catch (error){
+            }
+        })
+        //evento.start()
     }
 
     terminarEvento(){

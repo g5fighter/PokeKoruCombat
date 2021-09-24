@@ -46,11 +46,7 @@ const fs = require('fs');
 	 */
     damagePlayer(damage){
         this.ps -= damage;
-        if(this.ps <= 0){
-            return false;
-        }else{
-            return true;
-        }
+		return !(this.ps <= 0)
     }
 
 	/**

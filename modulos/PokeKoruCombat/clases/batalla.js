@@ -10,32 +10,36 @@ const Evento = require('./../../../scripts/evento')
   */
   module.exports = class Batalla extends Evento{
 
-    constructor(idCreador,idImplicados, managerClass){
+    constructor(idCreador,idImplicados, app){
+		console.log('[Batalla]: Creamos batalla')
 		super(idCreador,idImplicados)
-		this.id_player1 = idImplicados[0]
-		this.id_player2 = idImplicados[1]
 		this.turno = 0
-		this.managerClass = managerClass
+
 		// Leemos el archivo creamos los jugadores y guardamos los datos por si hay posibles creaciones de usuario
-		fs.readFile('./public/data/players.json', 'utf8' , (err, data) => {
-			if (err) {
-			  console.error(err)
-			  return
-			}
-			var parseado = JSON.parse(data)
-			this.player1 = new Player(this.id_player1,parseado);
-			this.player2 = new Player(this.id_player2,parseado);
-			parseado[this.id_player1] = {level : this.player1.level , exp :  this.player1.exp, winned :  this.player1.winned, losed :  this.player1.losed}
-			parseado[this.id_player2] = {level : this.player2.level , exp :  this.player2.exp, winned :  this.player2.winned, losed :  this.player2.losed}
-			fs.writeFile('./public/data/players.json', JSON.stringify(parseado) , function (err){
-				if (err) return console.log(err);
-			  });
-			Promise.all([this.managerClass.app.ApiTwitch.getProfileImage(idImplicados)]).then((values) => { 
-				this.player1.setProfileImage(values[0][0])
-				this.player2.setProfileImage(values[0][1])
-			})
-		})
+		console.warn('[Batalla]: Leemos archivo')
+		var data = fs.readFileSync('./public/data/players.json', 'utf8')
+		var parseado = JSON.parse(data)
+		this.player1 = new Player(idImplicados[0],parseado);
+		this.player2 = new Player(idImplicados[1],parseado);
+		
+		parseado[idImplicados[0]] = {level : this.player1.level , exp :  this.player1.exp, winned :  this.player1.winned, losed :  this.player1.losed}
+		parseado[idImplicados[1]] = {level : this.player2.level , exp :  this.player2.exp, winned :  this.player2.winned, losed :  this.player2.losed}
+
+		fs.writeFileSync('./public/data/players.json', JSON.stringify(parseado) , function (err){
+			if (err) return console.log(err);
+		  });
+
+		console.log('[Batalla]: Terminamos de crear batalla')
     }
+
+	async setImages(app){
+
+		var values = await app.ApiTwitch.getProfileImage([this.player1.id_player,this.player2.id_player])
+		this.player1.setProfileImage(values[0])
+		this.player2.setProfileImage(values[1])
+		console.log('[Batalla]: Images seted')
+
+	}
 
 	/**
 	 * Función que daña al jugador con el ID y el valor proporcionado
@@ -66,11 +70,11 @@ const Evento = require('./../../../scripts/evento')
 	 */
 	damageOtherPlayer(id_player){
 		if(this.isRonda(id_player)){
-			var estaDebilitado = this.damagePlayer(this.getOtherPlayer(id_player).id_player)
-			if(estaDebilitado){
+			var siguevivo = this.damagePlayer(this.getOtherPlayer(id_player).id_player)
+			if(!siguevivo){
 				this.getPlayer(id_player).gainExperienece(this.getOtherPlayer(id_player))
 			}
-			return estaDebilitado
+			return siguevivo
 		}
 	}
 
@@ -186,9 +190,9 @@ const Evento = require('./../../../scripts/evento')
 
 	}
 
-	start(firstTime = false){
+	/*start(firstTime = false){
 		console.log('[Batalla]: Se comienza el evento')
 		this.managerClass.loadGame(firstTime)
-    }
+    }*/
 
 }

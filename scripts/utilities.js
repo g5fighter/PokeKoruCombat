@@ -17,11 +17,11 @@ module.exports = class utilities{
      * Función que reproduce un sonido
      * @param {*} sound 
      */
-    async playSound(sound){
+    static async playSound(sound){
         let audio = player.play(sound, function(err){
             if (err) throw err
         })
-        await this.sleep(1000)
+        await utilities.sleep(1000)
         audio.kill();
     }
 
@@ -30,7 +30,7 @@ module.exports = class utilities{
      * @param {int} ms 
      * @returns 
      */
-    sleep(ms) {
+    static sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
       }
 }

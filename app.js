@@ -5,7 +5,6 @@ const socketio = require('socket.io')	// Libreria de servidor
 const tmi = require('tmi.js');	// Libreria que maneja el chat de Twitch
 const { readdirSync } = require('fs')
 const fs = require('fs');
-const path = require('path');
 
 // Variables globales
 const port = 5000	// Puerto que abre el servidor
@@ -68,17 +67,14 @@ this.io = socketio(server)
 
 this.io.on('connection', socket => {
     console.log("[Sockets]: Nuevo cliente conectado")
-	if(this.eventManager.evento_actual!=null){
+	/*if(this.eventManager.evento_actual!=null){
 		this.eventManager.evento_actual.start(true)
-	}
+	}*/
 })
-
-
-
 
 // Conexión al IRC de Twitch
 const client = new tmi.Client({
-	options: { debug: true },
+	options: { debug: false },
 	identity: {
 		username: channelandusername,
 		password: oauth
