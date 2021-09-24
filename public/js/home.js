@@ -68,6 +68,7 @@ function parpadeo(player){
 
     // Carga el juego
     socket.on('change_to_game', data => {
+        console.log('[change_to_game]: Entro en change to game')
         if(data.firstTime==true){
             if(id!=data.evento.id){
                 clearHTML()
@@ -83,14 +84,14 @@ function parpadeo(player){
             if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
                 var txt = xmlhttp.responseText;
                 document.body.insertAdjacentHTML('afterbegin',txt)
-                document.getElementById("NombreJugadorUno").getElementsByTagName("span")[0].innerHTML = data.evento.tipo.player1.id_player;
-                document.getElementById("NombreJugadorDos").getElementsByTagName("span")[0].innerHTML = data.evento.tipo.player2.id_player;
+                document.getElementById("NombreJugadorUno").getElementsByTagName("span")[0].innerHTML = data.evento.player1.id_player;
+                document.getElementById("NombreJugadorDos").getElementsByTagName("span")[0].innerHTML = data.evento.player2.id_player;
 
-                document.getElementById("FotoJugadorUno").setAttribute("src", data.profile1);
-                document.getElementById("FotoJugadorDos").setAttribute("src", data.profile2);
+                document.getElementById("FotoJugadorUno").setAttribute("src", data.player1.profile_image);
+                document.getElementById("FotoJugadorDos").setAttribute("src", data.player2.profile_image);
 
-                document.getElementById("NombreJugadorDos_bx").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.tipo.player1.level;
-                document.getElementById("NombreJugadorDos_bw").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.tipo.player2.level;
+                document.getElementById("NombreJugadorDos_bx").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.player1.level;
+                document.getElementById("NombreJugadorDos_bw").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.player2.level;
 
                 cargarVida(data.evento)
                 cargarExp(data.evento)

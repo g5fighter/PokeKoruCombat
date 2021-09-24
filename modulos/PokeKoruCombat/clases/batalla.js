@@ -1,5 +1,6 @@
 const Player = require("./player");
 const fs = require('fs');
+const Evento = require('./../../../scripts/evento')
 
  /**
   * La clase Batalla es un tipo de evento que guarda:
@@ -7,24 +8,32 @@ const fs = require('fs');
   * 	- El turno del combate
   * 
   */
-  module.exports = class Batalla{
+  module.exports = class Batalla extends Evento{
 
-    constructor(id_player1,id_player2){
+    constructor(idCreador,idImplicados, managerClass){
+		super(idCreador,idImplicados)
+		this.id_player1 = idImplicados[0]
+		this.id_player2 = idImplicados[1]
 		this.turno = 0
+		this.managerClass = managerClass
 		// Leemos el archivo creamos los jugadores y guardamos los datos por si hay posibles creaciones de usuario
-		fs.readFile('public/data/players.json', 'utf8' , (err, data) => {
+		fs.readFile('./public/data/players.json', 'utf8' , (err, data) => {
 			if (err) {
 			  console.error(err)
 			  return
 			}
 			var parseado = JSON.parse(data)
-			this.player1 = new Player(id_player1,parseado);
-			this.player2 = new Player(id_player2,parseado);
-			parseado[id_player1] = {level : this.player1.level , exp :  this.player1.exp, winned :  this.player1.winned, losed :  this.player1.losed}
-			parseado[id_player2] = {level : this.player2.level , exp :  this.player2.exp, winned :  this.player2.winned, losed :  this.player2.losed}
-			fs.writeFile('public/data/players.json', JSON.stringify(parseado) , function (err){
+			this.player1 = new Player(this.id_player1,parseado);
+			this.player2 = new Player(this.id_player2,parseado);
+			parseado[this.id_player1] = {level : this.player1.level , exp :  this.player1.exp, winned :  this.player1.winned, losed :  this.player1.losed}
+			parseado[this.id_player2] = {level : this.player2.level , exp :  this.player2.exp, winned :  this.player2.winned, losed :  this.player2.losed}
+			fs.writeFile('./public/data/players.json', JSON.stringify(parseado) , function (err){
 				if (err) return console.log(err);
 			  });
+			Promise.all([this.managerClass.app.ApiTwitch.getProfileImage(idImplicados)]).then((values) => { 
+				this.player1.setProfileImage(values[0][0])
+				this.player2.setProfileImage(values[0][1])
+			})
 		})
     }
 
@@ -176,5 +185,10 @@ const fs = require('fs');
 		}
 
 	}
+
+	start(firstTime = false){
+		console.log('[Batalla]: Se comienza el evento')
+		this.managerClass.loadGame(firstTime)
+    }
 
 }

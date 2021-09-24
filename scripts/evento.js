@@ -8,9 +8,8 @@
  * 	la función startEvent() lo reconocerá y creará el tipo de evento correspondiente
  */
  module.exports = class Evento{
-    constructor(tipo,idCreador,idImplicados){
+    constructor(idCreador,idImplicados){
 		this.id = makeid(15)
-        this.tipo = tipo;
         this.idCreador = idCreador;
         this.idImplicados = idImplicados;
     }
@@ -27,8 +26,7 @@
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
     for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * 
- charactersLength));
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
    }
    return result;
 }

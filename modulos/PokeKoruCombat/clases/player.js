@@ -13,26 +13,31 @@ const fs = require('fs');
  module.exports = class Player{
     constructor(id_player,parseado){
         this.id_player = id_player;
-			if(parseado[id_player]==null){
-				this.level = 1
-				this.exp = 0
-				this.expNivel = 10
-				this.ps = 100; 
-				this.psBase = 100; 
-				this.ataque = 10;
-				this.winned = 0;
-				this.losed = 0;
-			}else{
-				this.exp = parseado[id_player]['exp']
-				this.level = parseado[id_player]['level']
-				this.expNivel = 10 * (1,1 ** (this.level-1))
-				this.ps = 100 * (1.05 ** (this.level-1)); 
-				this.psBase = 100 * (1.05 ** (this.level-1)); 
-				this.ataque = 10 * (1.05 ** (this.level-1));;
-				this.winned = parseado[id_player]['winned']
-				this.losed = parseado[id_player]['losed']
-			}
+		this.profile_image = null
+		if(parseado[id_player]==null){
+			this.level = 1
+			this.exp = 0
+			this.expNivel = 10
+			this.ps = 100; 
+			this.psBase = 100; 
+			this.ataque = 10;
+			this.winned = 0;
+			this.losed = 0;
+		}else{
+			this.exp = parseado[id_player]['exp']
+			this.level = parseado[id_player]['level']
+			this.expNivel = Math.round(10*(1.1**(this.level-1)))
+			this.ps = 100 * (1.05 ** (this.level-1)); 
+			this.psBase = 100 * (1.05 ** (this.level-1)); 
+			this.ataque = 10 * (1.05 ** (this.level-1));;
+			this.winned = parseado[id_player]['winned']
+			this.losed = parseado[id_player]['losed']
+		}
     }
+
+	setProfileImage(image){
+		this.profile_image = image
+	}
 
 	/**
 	 * Función que daña al jugador en caso de debilitarlo devuelve false
@@ -65,11 +70,13 @@ const fs = require('fs');
 	 */
 	gainExperienece(player){
 		var amount = 10*(1.1**(player.level-1))
-		this.exp += amount;
-		var expEsteNivel = 10*(1.1**(this.level-1))
-		if(this.exp > expEsteNivel && this.level < 100){
-			this.exp -= expEsteNivel
+		this.exp += Math.round(amount);
+		this.expNivel = Math.round(10*(1.1**(this.level-1)))
+		while(this.exp >= this.expNivel && this.level < 100){
+			this.exp -= this.expNivel
 			this.level+=1;
+			this.expNivel = Math.round(10*(1.1**(this.level-1)))
+			console.log(`Actual exp: ${this.exp} exp de nivel: ${this.expNivel}`)
 		}
 		fs.readFile('public/data/players.json', 'utf8' , (err, data) => {
 			if (err) {
