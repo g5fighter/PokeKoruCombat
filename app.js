@@ -3,6 +3,9 @@ require('dotenv').config({path: __dirname + '/.env'}) // Configura el archivo de
 const express = require('express')
 const socketio = require('socket.io')	// Libreria de servidor
 const tmi = require('tmi.js');	// Libreria que maneja el chat de Twitch
+const { readdirSync } = require('fs')
+const fs = require('fs');
+const path = require('path');
 
 // Variables globales
 const port = 5000	// Puerto que abre el servidor
@@ -13,12 +16,28 @@ this.ApiTwitch = new (require('./scripts/apitwitch'))(oauth)
 
 
 // Cargar Modulos
-const PokeKoruCombat = new (require('./modulos/PokeKoruCombat/pokekorucombat'))(this)
-this.eventManager.loadModule(PokeKoruCombat)
-const TTS = new (require('./modulos/TTS/tts'))()
-this.eventManager.loadModule(TTS)
-const RaidClip = new (require('./modulos/RaidClip/raidclip'))()
-this.eventManager.loadModule(RaidClip)
+const getDirectories = source =>
+  readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
+getDirectories('./modulos').forEach(element => {
+	fs.readdir('./modulos/'+element, (err, files) => {
+		//handling error
+		if (err) {
+			return console.log('Unable to scan directory: ' + err);
+		} 
+		//listing all files using forEach
+		files.forEach(file => {
+			// Do whatever you want to do with the file
+			if(file.includes('.js')){
+				var module = new (require('./modulos/'+element+'/'+file))(this)
+				this.eventManager.loadModule(module)
+			}
+ 
+		});
+	});
+});
 
 
 // Creacion del servidor y configuracion de las rutas
