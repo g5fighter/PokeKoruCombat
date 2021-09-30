@@ -3,8 +3,30 @@ const lifeBarSize = '260.104'
 const expBarSize = '520'
 
 function cargarVida(evento){
-    document.getElementById("barra_vida_main").style.width = lifeBarSize * evento.player1.ps / evento.player1.psBase;
-    document.getElementById("barra_vida_secun").style.width = lifeBarSize * evento.player2.ps / evento.player2.psBase;
+    // Buscamos barras
+    var barra_vida_main = document.getElementById("barra_vida_main").style
+    var barra_vida_secun = document.getElementById("barra_vida_secun").style
+
+    // Cambiamos la vida
+    barra_vida_main.width = lifeBarSize * evento.player1.ps / evento.player1.psBase;
+    barra_vida_secun.width = lifeBarSize * evento.player2.ps / evento.player2.psBase;
+
+    // Cambiamos el color si tal es el caso
+    cambiarColor(barra_vida_main, evento.player1.ps, evento.player1.psBase)
+    cambiarColor(barra_vida_secun, evento.player2.ps, evento.player2.psBase)
+}
+
+function cambiarColor(barra,actual,base){
+    // Cambiamos el color si tal es el caso
+    if(actual / base < 1/10){
+        barra.fill = "rgb(211, 20, 20,1)";  // Rojo
+        console.log('rojo')
+    }else if(actual / base < 1/2){
+        barra.fill = "rgb(211, 150, 20,1)"; // Naranja
+        console.log('naranja')
+    }else{
+        console.log('verde')
+    }
 }
 
 function cargarExp(evento){
