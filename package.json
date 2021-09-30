@@ -4,8 +4,8 @@
   "description": "",
   "main": "public/js/main.js",
   "dependencies": {
-    "@google-cloud/storage": "^5.14.0",
-    "@google-cloud/text-to-speech": "^3.3.0",
+    "@google-cloud/storage": "^5.14.3",
+    "@google-cloud/text-to-speech": "^3.3.1",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
@@ -17,7 +17,7 @@
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.13"
   },
   "nodemonConfig": {
     "ignore": [
