@@ -1,5 +1,7 @@
 const utilities = require('./../../scripts/utilities')
 const Batalla = require('./clases/batalla')
+const fs = require('fs');
+const { notEqual } = require('assert');
 module.exports = class PokeKoruCombat{
     constructor(app){
         this.app = app
@@ -33,16 +35,19 @@ module.exports = class PokeKoruCombat{
             if(this.app.eventManager.evento_actual==null){
                 return
             }
-            if( this.app.eventManager.evento_actual instanceof Batalla){
-                if( this.app.eventManager.evento_actual.idImplicados.includes(tags['username'])){
-                    if(! this.app.eventManager.evento_actual.damageOtherPlayer(tags['username'])){
-                        this.app.io.sockets.emit('deblitado', {evento:  this.app.eventManager.evento_actual})
-                        this.app.eventManager.terminarEvento()
-                    }else{
-                        this.app.io.sockets.emit('take_damage', {evento:  this.app.eventManager.evento_actual, player:  this.app.eventManager.evento_actual.getPlayerNumber( this.app.eventManager.evento_actual.getOtherPlayer(tags['username']))})
-                    }
-                    utilities.playSound('./public/sound/punch.mp3')
-                
+            if(this.app.eventManager.evento_actual instanceof Batalla){
+                if(this.app.eventManager.evento_actual.idImplicados.includes(tags['username'])){
+                    var golpeo = this.app.eventManager.evento_actual.damageOtherPlayer(tags['username'])
+                    console.log('[PokeKoruCombat]: Sigue vivo -> '+golpeo)
+                    if(golpeo != undefined){
+                        if(!golpeo){
+                            this.app.io.sockets.emit('function', {funcion: 'clearHTML'})
+                            this.app.eventManager.terminarEvento()
+                        }else{
+                            this.app.io.sockets.emit('function', {funcion: 'take_damage', evento:  this.app.eventManager.evento_actual, player:  this.app.eventManager.evento_actual.getPlayerNumber( this.app.eventManager.evento_actual.getOtherPlayer(tags['username']))})
+                        }
+                        utilities.playSound('./modulos/PokeKoruCombat/sounds/punch.mp3')
+                    }                               
                 }
             }
         }
@@ -50,7 +55,20 @@ module.exports = class PokeKoruCombat{
     
     start(firstTime){
         console.log('[PokeKoruCombat]: Lodeamos el juego') // Segguir recorrido desde aqui
-        this.app.io.sockets.emit('change_to_game', {evento: this.app.eventManager.evento_actual, firstTime: firstTime})
+        try {
+            var data = fs.readFileSync('./modulos/PokeKoruCombat/templates/PokeKoruCombat.ejs', 'utf8')
+            var html = data
+            //console.log('[PokeKoruCombat]: Cargamos el template -> \n'+html)
+            var data = fs.readFileSync('./modulos/PokeKoruCombat/client-side/inject.js', 'utf8')
+            var script = data
+            //console.log('[PokeKoruCombat]: Cargamos el script -> \n'+script)
+            this.app.io.sockets.emit('loadpage', {html: html, script: script})
+            this.app.io.sockets.emit('function', {funcion: 'loadData',evento: this.app.eventManager.evento_actual, firstTime: firstTime})
+            console.log('[PokeKoruCombat]: Terminamos de lodear')
+          } catch (err) {
+            console.log('[ERROR] -> [PokeKoruCombat]:'+err)
+          }
+
     }
 
     isEvent(evento){

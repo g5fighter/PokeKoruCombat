@@ -6,7 +6,7 @@ module.exports = class TTS{
         
     }
     tratarMensaje(channel, tags, message, self){
-        if(utilities.getInclusion(message, '!habla')) { // Comando para reproducir TTS del parametro dado
+        if(tags.mod && utilities.getInclusion(message, '!habla')) { // Comando para reproducir TTS del parametro dado
             var child = spawn('python',['modulos/TTS/app.py',message.substring(7,message.length)]);
     
             child.stderr.on('data',(data) => {

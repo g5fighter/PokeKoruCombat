@@ -48,11 +48,11 @@ module.exports = class EventManager{
     }
 
     terminarEvento(){
-        evento_actual = null
-        if(eventos.length > 0 ){
+        this.evento_actual = null
+        if(this.eventos.length > 0 ){
             eventoahora = eventos.pop()
             this.startEvent(eventoahora)
-            evento_actual = eventoahora
+            this.evento_actual = eventoahora
         }
     }
 }

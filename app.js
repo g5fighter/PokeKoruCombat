@@ -74,7 +74,7 @@ this.io.on('connection', socket => {
 
 // Conexión al IRC de Twitch
 const client = new tmi.Client({
-	options: { debug: false },
+	options: { debug: true },
 	identity: {
 		username: channelandusername,
 		password: oauth
