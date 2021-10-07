@@ -67,11 +67,29 @@ function loadData(data){
 
     cargarVida(data.evento)
     cargarExp(data.evento)
+
+    hideMessageBox()
+    animacionEntrada()
+}
+
+function animacionEntrada(){
+    
+}
+
+function hideMessageBox(){
+    document.getElementById("CajaInfo").style.display = "none";
+}
+
+function showMessage(message, time){
+    document.getElementById("CajaInfo").style.display = "block";
+    document.getElementById("NombreJugadorDos_b").getElementsByTagName("span")[0].innerHTML = message;
+    setTimeout(() => {  hideMessageBox(); }, time);
 }
 
 function take_damage(data){
     cargarVida(data.evento)
     if (data.player != undefined){
         parpadeo(data.player)
+        showMessage(data.message,4000)
     }
 }

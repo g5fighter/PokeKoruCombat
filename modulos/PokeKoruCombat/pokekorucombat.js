@@ -37,14 +37,14 @@ module.exports = class PokeKoruCombat{
             }
             if(this.app.eventManager.evento_actual instanceof Batalla){
                 if(this.app.eventManager.evento_actual.idImplicados.includes(tags['username'])){
-                    var golpeo = this.app.eventManager.evento_actual.damageOtherPlayer(tags['username'])
-                    console.log('[PokeKoruCombat]: Sigue vivo -> '+golpeo)
-                    if(golpeo != undefined){
-                        if(!golpeo){
+                    let {siguevivo,message} = this.app.eventManager.evento_actual.damageOtherPlayer(tags['username'])
+                    console.log('[PokeKoruCombat]: Sigue vivo -> '+siguevivo)
+                    if(siguevivo != undefined){
+                        if(!siguevivo){
                             this.app.io.sockets.emit('function', {funcion: 'clearHTML'})
                             this.app.eventManager.terminarEvento()
                         }else{
-                            this.app.io.sockets.emit('function', {funcion: 'take_damage', evento:  this.app.eventManager.evento_actual, player:  this.app.eventManager.evento_actual.getPlayerNumber( this.app.eventManager.evento_actual.getOtherPlayer(tags['username']))})
+                            this.app.io.sockets.emit('function', {funcion: 'take_damage', evento:  this.app.eventManager.evento_actual, player:  this.app.eventManager.evento_actual.getPlayerNumber( this.app.eventManager.evento_actual.getOtherPlayer(tags['username'])), message: message})
                         }
                         utilities.playSound('./modulos/PokeKoruCombat/sounds/punch.mp3')
                     }                               

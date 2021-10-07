@@ -70,12 +70,19 @@ const Evento = require('./../../../scripts/evento')
 	 */
 	damageOtherPlayer(id_player){
 		if(this.isRonda(id_player)){
-			var siguevivo = this.damagePlayer(this.getOtherPlayer(id_player).id_player)
+			var jugadorAtacante = id_player
+			var jugadorAtacado = this.getOtherPlayer(id_player).id_player;
+			let {siguevivo,damage} = this.damagePlayer(jugadorAtacado)
 			if(!siguevivo){
 				this.getPlayer(id_player).gainExperienece(this.getOtherPlayer(id_player))
 			}
-			return siguevivo
+			var message = this.genAttackMessage(jugadorAtacante,jugadorAtacado,damage)
+			return {siguevivo,message}
 		}
+	}
+
+	genAttackMessage(jugadorAtacante,jugadorAtacado,damage){
+		return '<b>'+jugadorAtacante+ '</b> ha atacado a <b>'+jugadorAtacado+ '</b> con un ataque de <b>'+Math.round(damage*100)/100+ '</b> de daño'
 	}
 
 	/**

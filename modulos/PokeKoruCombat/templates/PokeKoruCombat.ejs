@@ -652,6 +652,84 @@
 		top: 154px;
 		overflow: visible;
 	}
+	#CajaInfo {
+		position: absolute;
+		width: 1920px;
+		height: 280px;
+		left: 0px;
+		top: 800px;
+		overflow: visible;
+	}
+	#Rectngulo_1 {
+		fill: rgba(32,32,32,1);
+	}
+	.Rectngulo_1 {
+		position: absolute;
+		overflow: visible;
+		width: 1920px;
+		height: 280px;
+		left: 0px;
+		top: 0px;
+	}
+	#Rectngulo_2 {
+		fill: rgba(72,64,64,1);
+	}
+	.Rectngulo_2 {
+		position: absolute;
+		overflow: visible;
+		width: 1898px;
+		height: 268px;
+		left: 11px;
+		top: 6px;
+	}
+	#Rectngulo_3_b {
+		fill: url(#Rectngulo_3_b);
+	}
+	.Rectngulo_3_b {
+		position: absolute;
+		overflow: visible;
+		width: 1886px;
+		height: 258px;
+		left: 17px;
+		top: 11px;
+	}
+	#Rectngulo_4_b {
+		fill: url(#Rectngulo_4_b);
+	}
+	.Rectngulo_4_b {
+		position: absolute;
+		overflow: visible;
+		width: 1868px;
+		height: 243px;
+		left: 26px;
+		top: 19px;
+	}
+	#Rectngulo_5 {
+		fill: rgba(255,255,255,1);
+	}
+	.Rectngulo_5 {
+		position: absolute;
+		overflow: visible;
+		width: 1785px;
+		height: 229px;
+		left: 42px;
+		top: 26px;
+	}
+	#NombreJugadorDos_b {
+		filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+		left: 67px;
+		top: 47px;
+		position: absolute;
+		overflow: visible;
+		width: 1750px;
+		height: auto;
+		text-align: left;
+		font-family: Montserrat;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 45px;
+		color: rgba(71,71,71,1);
+	}
 </style>
 <script id="applicationScript">
 ///////////////////////////////////////
@@ -3762,6 +3840,39 @@ window.application = new Application();
 		
 	<img id="FotoJugadorDos" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
 		
+	<div id="CajaInfo">
+		<svg class="Rectngulo_1">
+			<rect id="Rectngulo_1" rx="0" ry="0" x="0" y="0" width="1920" height="280">
+			</rect>
+		</svg>
+		<svg class="Rectngulo_2">
+			<rect id="Rectngulo_2" rx="18" ry="18" x="0" y="0" width="1898" height="268">
+			</rect>
+		</svg>
+		<svg class="Rectngulo_3_b">
+			<linearGradient id="Rectngulo_3_b" spreadMethod="pad" x1="0.5" x2="0.5" y1="0" y2="1">
+				<stop offset="0" stop-color="#f8d868" stop-opacity="1"></stop>
+				<stop offset="1" stop-color="#e8a038" stop-opacity="1"></stop>
+			</linearGradient>
+			<rect id="Rectngulo_3_b" rx="18" ry="18" x="0" y="0" width="1886" height="258">
+			</rect>
+		</svg>
+		<svg class="Rectngulo_4_b">
+			<linearGradient id="Rectngulo_4_b" spreadMethod="pad" x1="0.5" x2="0.5" y1="0" y2="1">
+				<stop offset="0" stop-color="#606068" stop-opacity="1"></stop>
+				<stop offset="1" stop-color="#505058" stop-opacity="1"></stop>
+			</linearGradient>
+			<rect id="Rectngulo_4_b" rx="18" ry="18" x="0" y="0" width="1868" height="243">
+			</rect>
+		</svg>
+		<svg class="Rectngulo_5">
+			<rect id="Rectngulo_5" rx="18" ry="18" x="0" y="0" width="1785" height="229">
+			</rect>
+		</svg>
+		<div id="NombreJugadorDos_b">
+			<span>Jugador realiza a ataque</span>
+		</div>
+	</div>
 </div>
 </body>
 </html>

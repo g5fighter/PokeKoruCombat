@@ -46,7 +46,8 @@ const fs = require('fs');
 	 */
     damagePlayer(damage){
         this.ps -= damage;
-		return !(this.ps <= 0)
+		let siguevivo = !(this.ps <= 0);
+		return {siguevivo , damage};
     }
 
 	/**
