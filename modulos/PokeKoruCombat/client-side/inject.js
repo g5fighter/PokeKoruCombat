@@ -62,8 +62,8 @@ function loadData(data){
     document.getElementById("FotoJugadorUno").setAttribute("src", data.evento.player1.profile_image);
     document.getElementById("FotoJugadorDos").setAttribute("src", data.evento.player2.profile_image);
 
-    document.getElementById("NombreJugadorDos_bx").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.player1.level;
-    document.getElementById("NombreJugadorDos_bw").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.player2.level;
+    document.getElementById("NivelJugadorUno").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.player1.level;
+    document.getElementById("NivelJugadorDos").getElementsByTagName("span")[0].innerHTML = 'Nv'+data.evento.player2.level;
 
     cargarVida(data.evento)
     cargarExp(data.evento)
