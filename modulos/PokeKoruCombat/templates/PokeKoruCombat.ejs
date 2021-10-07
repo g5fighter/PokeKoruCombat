@@ -156,12 +156,20 @@
 		left: 14.634px;
 		top: 9.913px;
 	}
-	#Exp_Main {
+	#NombreHolderSecun {
+		position: absolute;
+		width: 658.236px;
+		height: 182.273px;
+		left: 0px;
+		top: 80.727px;
+		overflow: visible;
+	}
+	#Exp_Secun {
 		position: absolute;
 		width: 538px;
 		height: 50px;
-		left: 1357px;
-		top: 705px;
+		left: 20px;
+		top: 132.273px;
 		overflow: visible;
 	}
 	#Base_exp {
@@ -194,10 +202,10 @@
 		left: 0.221px;
 		top: 0px;
 	}
-	#Exp {
+	#ExpSecundario {
 		fill: rgba(72,144,248,1);
 	}
-	.Exp {
+	.ExpSecundario {
 		position: absolute;
 		overflow: visible;
 		width: 520px;
@@ -218,77 +226,6 @@
 		left: 0px;
 		top: 0px;
 		transform: matrix(1,0,0,1,0,0);
-	}
-	#Exp_Secun {
-		position: absolute;
-		width: 538px;
-		height: 50px;
-		left: 20px;
-		top: 213px;
-		overflow: visible;
-	}
-	#Base_exp_z {
-		fill: rgba(72,72,72,1);
-	}
-	.Base_exp_z {
-		position: absolute;
-		overflow: visible;
-		width: 538px;
-		height: 50px;
-		left: 0px;
-		top: 0px;
-	}
-	#Barra_ {
-		position: absolute;
-		width: 520.221px;
-		height: 32px;
-		left: 9px;
-		top: 9px;
-		overflow: visible;
-	}
-	#Fondo_Exp_ {
-		fill: rgba(248,246,249,1);
-	}
-	.Fondo_Exp_ {
-		position: absolute;
-		overflow: visible;
-		width: 520px;
-		height: 32px;
-		left: 0.221px;
-		top: 0px;
-	}
-	#Exp_ {
-		fill: rgba(72,144,248,1);
-	}
-	.Exp_ {
-		position: absolute;
-		overflow: visible;
-		width: 520px;
-		height: 32px;
-		left: 0.221px;
-		top: 0px;
-	}
-	#Sombra_ {
-		opacity: 0.27;
-		fill: rgba(0,0,0,1);
-	}
-	.Sombra_ {
-		mix-blend-mode: darken;
-		overflow: visible;
-		position: absolute;
-		width: 519.857px;
-		height: 23px;
-		left: 0px;
-		top: 0px;
-		transform: matrix(1,0,0,1,0,0);
-	}
-	#NombreHolderSecun {
-		position: absolute;
-		width: 658.236px;
-		height: 157.059px;
-		left: 0px;
-		top: 80.727px;
-		overflow: visible;
 	}
 	#path14717 {
 		fill: rgba(224,224,224,1);
@@ -428,10 +365,73 @@
 	#NombreHolderMain {
 		position: absolute;
 		width: 658.236px;
-		height: 157.059px;
+		height: 181.991px;
 		left: 1261.764px;
 		top: 573.009px;
 		overflow: visible;
+	}
+	#Exp_Main {
+		position: absolute;
+		width: 538px;
+		height: 50px;
+		left: 95.236px;
+		top: 131.991px;
+		overflow: visible;
+	}
+	#Base_exp_bd {
+		fill: rgba(72,72,72,1);
+	}
+	.Base_exp_bd {
+		position: absolute;
+		overflow: visible;
+		width: 538px;
+		height: 50px;
+		left: 0px;
+		top: 0px;
+	}
+	#Barra_be {
+		position: absolute;
+		width: 520.221px;
+		height: 32px;
+		left: 9px;
+		top: 9px;
+		overflow: visible;
+	}
+	#Fondo_Exp_bf {
+		fill: rgba(248,246,249,1);
+	}
+	.Fondo_Exp_bf {
+		position: absolute;
+		overflow: visible;
+		width: 520px;
+		height: 32px;
+		left: 0.221px;
+		top: 0px;
+	}
+	#ExpPrincipal {
+		fill: rgba(72,144,248,1);
+	}
+	.ExpPrincipal {
+		position: absolute;
+		overflow: visible;
+		width: 520px;
+		height: 32px;
+		left: 0.221px;
+		top: 0px;
+	}
+	#Sombra_bh {
+		opacity: 0.27;
+		fill: rgba(0,0,0,1);
+	}
+	.Sombra_bh {
+		mix-blend-mode: darken;
+		overflow: visible;
+		position: absolute;
+		width: 519.857px;
+		height: 23px;
+		left: 0px;
+		top: 0px;
+		transform: matrix(1,0,0,1,0,0);
 	}
 	#g58670 {
 		position: absolute;
@@ -3690,47 +3690,27 @@ window.application = new Application();
 			</ellipse>
 		</svg>
 	</div>
-	<div id="Exp_Main">
-		<svg class="Base_exp">
-			<rect id="Base_exp" rx="8" ry="8" x="0" y="0" width="538" height="50">
-			</rect>
-		</svg>
-		<div id="Barra">
-			<svg class="Fondo_Exp">
-				<rect id="Fondo_Exp" rx="0" ry="0" x="0" y="0" width="520" height="32">
-				</rect>
-			</svg>
-			<svg class="Exp">
-				<rect id="Exp" rx="0" ry="0" x="0" y="0" width="520" height="32">
-				</rect>
-			</svg>
-			<svg class="Sombra" viewBox="0 0 519.857 23">
-				<path id="Sombra" d="M 0 0 L 519.857177734375 0 L 519.857177734375 23 L 179.3421936035156 23 L 0 23 L 0 0 Z">
-				</path>
-			</svg>
-		</div>
-	</div>
-	<div id="Exp_Secun">
-		<svg class="Base_exp_z">
-			<rect id="Base_exp_z" rx="8" ry="8" x="0" y="0" width="538" height="50">
-			</rect>
-		</svg>
-		<div id="Barra_">
-			<svg class="Fondo_Exp_">
-				<rect id="Fondo_Exp_" rx="0" ry="0" x="0" y="0" width="520" height="32">
-				</rect>
-			</svg>
-			<svg class="Exp_">
-				<rect id="Exp_" rx="0" ry="0" x="0" y="0" width="520" height="32">
-				</rect>
-			</svg>
-			<svg class="Sombra_" viewBox="0 0 519.857 23">
-				<path id="Sombra_" d="M 0 0 L 519.857177734375 0 L 519.857177734375 23 L 179.3421936035156 23 L 0 23 L 0 0 Z">
-				</path>
-			</svg>
-		</div>
-	</div>
 	<div id="NombreHolderSecun">
+		<div id="Exp_Secun">
+			<svg class="Base_exp">
+				<rect id="Base_exp" rx="8" ry="8" x="0" y="0" width="538" height="50">
+				</rect>
+			</svg>
+			<div id="Barra">
+				<svg class="Fondo_Exp">
+					<rect id="Fondo_Exp" rx="0" ry="0" x="0" y="0" width="520" height="32">
+					</rect>
+				</svg>
+				<svg class="ExpSecundario">
+					<rect id="ExpSecundario" rx="0" ry="0" x="0" y="0" width="520" height="32">
+					</rect>
+				</svg>
+				<svg class="Sombra" viewBox="0 0 519.857 23">
+					<path id="Sombra" d="M 0 0 L 519.857177734375 0 L 519.857177734375 23 L 179.3421936035156 23 L 0 23 L 0 0 Z">
+					</path>
+				</svg>
+			</div>
+		</div>
 		<svg class="path14717" viewBox="41.804 36.578 619.517 127.508">
 			<path id="path14717" d="M 41.80364608764648 36.57818984985352 L 41.80364608764648 164.0863037109375 L 661.3201904296875 164.0863037109375 L 626.6058959960938 36.57818984985352 L 41.80364608764648 36.57818984985352 Z">
 			</path>
@@ -3777,6 +3757,26 @@ window.application = new Application();
 		</div>
 	</div>
 	<div id="NombreHolderMain">
+		<div id="Exp_Main">
+			<svg class="Base_exp_bd">
+				<rect id="Base_exp_bd" rx="8" ry="8" x="0" y="0" width="538" height="50">
+				</rect>
+			</svg>
+			<div id="Barra_be">
+				<svg class="Fondo_Exp_bf">
+					<rect id="Fondo_Exp_bf" rx="0" ry="0" x="0" y="0" width="520" height="32">
+					</rect>
+				</svg>
+				<svg class="ExpPrincipal">
+					<rect id="ExpPrincipal" rx="0" ry="0" x="0" y="0" width="520" height="32">
+					</rect>
+				</svg>
+				<svg class="Sombra_bh" viewBox="0 0 519.857 23">
+					<path id="Sombra_bh" d="M 0 0 L 519.857177734375 0 L 519.857177734375 23 L 179.3421936035156 23 L 0 23 L 0 0 Z">
+					</path>
+				</svg>
+			</div>
+		</div>
 		<div id="g58670">
 			<svg class="path58660" viewBox="0 0 619.516 127.508">
 				<path id="path58660" d="M 619.5164794921875 0 L 619.5164794921875 127.5081481933594 L 0 127.5081481933594 L 34.71429443359375 0 L 619.5164794921875 0 Z">

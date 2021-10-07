@@ -30,8 +30,8 @@ function cambiarColor(barra,actual,base){
 }
 
 function cargarExp(evento){
-    document.getElementById("Exp").style.width = expBarSize * evento.player1.exp / evento.player1.expNivel;
-    document.getElementById("Exp_").style.width = expBarSize * evento.player2.exp / evento.player2.expNivel;
+    document.getElementById("ExpPrincipal").style.width = expBarSize * evento.player1.exp / evento.player1.expNivel;
+    document.getElementById("ExpSecundario").style.width = expBarSize * evento.player2.exp / evento.player2.expNivel;
 
 }
 
@@ -73,7 +73,18 @@ function loadData(data){
 }
 
 function animacionEntrada(){
-    
+    var elem = document.getElementById("NombreHolderSecun")
+    var pos = -300;
+    clearInterval(frameElem);
+    frameElem = setInterval(frame, 1);
+    function frame() { 
+        if(pos>=0){
+            clearInterval(frameElem);
+        } else {
+            pos++;
+          elem.style.left = pos + 'px';
+        }
+      }
 }
 
 function hideMessageBox(){
