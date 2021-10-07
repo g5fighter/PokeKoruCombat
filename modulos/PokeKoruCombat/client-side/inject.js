@@ -93,7 +93,7 @@ function hideMessageBox(){
 
 function showMessage(message, time){
     document.getElementById("CajaInfo").style.display = "block";
-    document.getElementById("NombreJugadorDos_b").getElementsByTagName("span")[0].innerHTML = message;
+    document.getElementById("TextoCajaInfo").getElementsByTagName("span")[0].innerHTML = message;
     setTimeout(() => {  hideMessageBox(); }, time);
 }
 
