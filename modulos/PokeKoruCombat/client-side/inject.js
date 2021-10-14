@@ -1,6 +1,6 @@
 var frameElem = null;
-const lifeBarSize = '260.104'
-const expBarSize = '520'
+const lifeBarSize = 260.104
+const expBarSize = 520
 
 function cargarVida(evento){
     // Buscamos barras
@@ -20,12 +20,12 @@ function cambiarColor(barra,actual,base){
     // Cambiamos el color si tal es el caso
     if(actual / base < 1/10){
         barra.fill = "rgb(211, 20, 20,1)";  // Rojo
-        console.log('rojo')
+        //console.log('rojo')
     }else if(actual / base < 1/2){
         barra.fill = "rgb(211, 150, 20,1)"; // Naranja
-        console.log('naranja')
+        //console.log('naranja')
     }else{
-        console.log('verde')
+        //console.log('verde')
     }
 }
 
@@ -50,12 +50,14 @@ function parpadeo(player){
         } else {
           pos+=ida;
           elem.style.opacity = pos + '%';
-          elem.style.opacity = pos + '%';
         }
       }
 }
 
 function loadData(data){
+    hideElem("CajaInfo","NombreHolderSecun","NombreHolderMain","FotoJugadorUno","FotoJugadorDos")
+    setStartPos(["NombreHolderMain",1930],["NombreHolderSecun",-660])
+
     document.getElementById("NombreJugadorUno").getElementsByTagName("span")[0].innerHTML = data.evento.player1.id_player;
     document.getElementById("NombreJugadorDos").getElementsByTagName("span")[0].innerHTML = data.evento.player2.id_player;
 
@@ -67,34 +69,96 @@ function loadData(data){
 
     cargarVida(data.evento)
     cargarExp(data.evento)
-
-    hideMessageBox()
-    animacionEntrada()
+    
+    animacionEntrada(data.evento.player1.id_player, data.evento.player2.id_player)
 }
 
-function animacionEntrada(){
-    var elem = document.getElementById("NombreHolderSecun")
-    var pos = -300;
+function animacionEntrada(player1,player2){
+    animacionBasesEntrada(player1,player2);
+}
+
+function animacionBasesEntrada(player1,player2){
+    var elemSecun = document.getElementById("BaseSecun")
+    var elemMain = document.getElementById("BasePrincipal")
+    var posSecun = -670;
+    var posPrinc = 1950
     clearInterval(frameElem);
     frameElem = setInterval(frame, 1);
     function frame() { 
-        if(pos>=0){
+        if(posSecun>=(1000)){
             clearInterval(frameElem);
+            showMessage('<b>'+player1+'</b> reta a <b>'+player2 + '</b> a un combate',4000)
+            animacionJugadorEntrada()
+
         } else {
-            pos++;
-          elem.style.left = pos + 'px';
+            posSecun+=5;
+            posPrinc-=6.2;
+            elemSecun.style.left = posSecun + 'px';
+            elemMain.style.left = posPrinc + 'px';
         }
       }
 }
 
-function hideMessageBox(){
-    document.getElementById("CajaInfo").style.display = "none";
+function animacionJugadorEntrada(){
+    console.log("En parpade")
+    var elemMain =  document.getElementById("FotoJugadorUno")
+    elemMain.style.display = "block";
+    var elemSecun = document.getElementById("FotoJugadorDos");
+    elemSecun.style.display = "block";
+    var pos = 0;
+    clearInterval(frameElem);
+    frameElem = setInterval(frame, 1);
+    function frame() { 
+        if(pos == 100){
+            clearInterval(frameElem);
+            animacionInfoEntrada()
+        } else {
+          pos+=2;
+          elemMain.style.opacity = pos + '%';
+          elemSecun.style.opacity = pos + '%';
+        }
+      }
+}
+
+function animacionInfoEntrada(){
+    var elemSecun = document.getElementById("NombreHolderSecun")
+    elemSecun.style.display = "block";
+    var elemMain = document.getElementById("NombreHolderMain")
+    elemMain.style.display = "block";
+    var posSecun = -660;
+    var posPrinc = 1930
+    clearInterval(frameElem);
+    frameElem = setInterval(frame, 1);
+    function frame() { 
+        if(posSecun>=0){
+            clearInterval(frameElem);
+        } else {
+            posSecun+=5;
+            posPrinc-=5;
+            elemSecun.style.left = posSecun + 'px';
+            elemMain.style.left = posPrinc + 'px';
+        }
+      }
+}
+
+function hideElem(){
+    for (var i = 0; i < arguments.length; i++) {
+        document.getElementById(arguments[i]).style.display = "none";
+      }
+    
+}
+
+function setStartPos(){
+    for (var i = 0; i < arguments.length; i++) {
+        document.getElementById(arguments[i][0]).style.left = arguments[i][1];
+      }
+    
 }
 
 function showMessage(message, time){
     document.getElementById("CajaInfo").style.display = "block";
     document.getElementById("TextoCajaInfo").getElementsByTagName("span")[0].innerHTML = message;
-    setTimeout(() => {  hideMessageBox(); }, time);
+    setTimeout(() => {  hideElem("CajaInfo"); }, time);
 }
 
 function take_damage(data){

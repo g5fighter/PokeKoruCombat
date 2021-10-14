@@ -6,6 +6,8 @@ const tmi = require('tmi.js');	// Libreria que maneja el chat de Twitch
 const { readdirSync } = require('fs')
 const fs = require('fs');
 
+const prompt = require('prompt-sync')();
+
 // Variables globales
 const port = 5000	// Puerto que abre el servidor
 const channelandusername = process.env['CHANNEL'];	// Canal al que se conecta y usuario que usará el bot

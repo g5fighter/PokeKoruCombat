@@ -38,8 +38,8 @@ module.exports = class PokeKoruCombat{
             if(this.app.eventManager.evento_actual instanceof Batalla){
                 if(this.app.eventManager.evento_actual.idImplicados.includes(tags['username'])){
                     let {siguevivo,message} = this.app.eventManager.evento_actual.damageOtherPlayer(tags['username'])
-                    console.log('[PokeKoruCombat]: Sigue vivo -> '+siguevivo)
                     if(siguevivo != undefined){
+                        console.log('[PokeKoruCombat]: Sigue vivo -> '+siguevivo)
                         if(!siguevivo){
                             this.app.io.sockets.emit('function', {funcion: 'clearHTML'})
                             this.app.eventManager.terminarEvento()

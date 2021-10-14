@@ -78,7 +78,11 @@ const Evento = require('./../../../scripts/evento')
 			}
 			var message = this.genAttackMessage(jugadorAtacante,jugadorAtacado,damage)
 			return {siguevivo,message}
+		}else{
+			patata = undefined
+			return {patata,patata}
 		}
+
 	}
 
 	genAttackMessage(jugadorAtacante,jugadorAtacado,damage){
