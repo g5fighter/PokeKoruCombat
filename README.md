@@ -12,7 +12,3 @@ El desarrollo de este proyecto está en progreso.
 
 # Progreso actual
 Desde [Trello](https://trello.com/b/38kVjFYo) podréis ver mi progreso actual que estoy haciendo y que falta por hacer.
-
-# Webs de monitorización del progreso
-* [Twitch](https://www.twitch.tv/g5fighter_design) : Progreso en directo
-* [Trello](https://trello.com/b/38kVjFYo) : Monitorización del progreso
